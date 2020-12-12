@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="custom.css" rel="stylesheet">
+
+    <title>微博er——主页</title>
+</head>
+<body>
+<nav class="navbar sticky-top navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="font-size: calc(1.325rem + 0.9vw)">微博er</a>
+        <div class="d-flex">
+            <button type="button" class="btn btn-outline-primary" style="margin-right: 6px">登录</button>
+            <button type="button" class="btn btn-outline-secondary">注册</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 720px">
+    <div class="container">
+        <form>
+            <div class="container">
+                <label for="new" class="h3" style="margin-top: 12px">说点什么吧</label>
+                <textarea class="form-control" id="new" disabled placeholder="请先登录"></textarea>
+                <button type="button" class="btn btn-primary" style="margin-top: 6px" disabled>发表</button>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="container">
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <span class="nav-link sort-by">排序方式：</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link sort-by">时间</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link sort-by">点赞</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link sort-by">评论</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container article">
+            <div class="author-time">
+                <a class="author-name h4">马保国</a>
+                <span class="time">2小时前</span>
+            </div>
+            <p>
+                欸 朋友们好啊
+                我是浑元形意太极门掌门人马保国
+                刚才有个朋友问我
+                马老师发生什么事啦
+                我说怎么回事
+                给我发了几张截图
+                我一看
+                哦
+                原来是昨天
+                有两个年轻人
+                三十多岁
+                一个体重九十多公斤
+                一个体重八十多公斤
+                他们说
+                欸
+                有一个说是
+                我在健身房练功
+                颈椎练坏了
+                马老师你能不能教教我浑元功法
+                欸
+                帮助治疗一下我的颈椎病
+                我说可以
+                我说你在健身房练死劲儿不好用
+                他不服气
+                欸
+                我说小朋友
+                你两个手来折我一个手指头
+                他折不动
+                他说你这也没用
+                我说我这有用
+                这是化劲儿
+                传统功夫是讲化劲儿的
+                四两拨千斤
+                二百多斤的英国大力士
+                都握不动我这一个手指
+                他说要和我试试
+                我说可以
+                欸
+                我一说他啪一下就站起来了
+                很快啊
+                然后上来就是
+                一个左正蹬
+                一个右鞭腿
+                一个左刺拳
+                我全部防出去了啊
+                防出去以后自然是
+                传统功夫以点到为止
+                右拳放在他鼻子上
+                没打他
+                我笑一下
+                准备收拳
+                因为这时间
+                按照传统功夫的点到为止
+                他就输了
+                如果我这一拳发力
+                一拳就把他鼻子打骨折了
+                放在他鼻子上没用打他
+                他也承认
+                我先打到他面部
+                他不知道拳放在他鼻子上
+                他承认我先打到他面部啊
+                我收拳的时间不打了
+                他突然袭击左刺拳来打我脸
+                啊
+                我大意了啊
+                没有闪
+                欸
+                他的左拳给我眼
+                给我右眼蹭了一下
+                但没关系啊
+                他也说
+                他结束也说了
+                两分多钟以后
+                当时流眼泪了捂着眼
+                我说停停
+                然后两分钟以后
+                两分多钟以后
+                就好了
+                我说小伙子你不讲武德你不懂
+                他说马老师对不起对不起
+                我不懂规矩
+                啊
+                我是
+                他说他是乱打的
+                他可不是乱打的啊
+                正蹬
+                鞭腿
+                左刺拳
+                训练有素
+                后来他说他练过三四年泰拳啊
+                看来是有备而来
+                这两个年轻人
+                不讲武德
+                来
+                骗
+                来
+                偷袭
+                我69岁的
+                老同志
+                这好吗
+                这不好
+                我劝
+                这位
+                年轻人
+                好自为之
+                好好反思
+                不要再犯这样的聪明
+                小聪明
+                啊
+                额
+                武林要以和为贵
+                要讲武德
+                不要搞
+                窝里斗
+                谢谢朋友们
+            </p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link count">点赞 666</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link count">评论 233</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container article">
+            <div class="author-time">
+                <a class="author-name h4">马保国</a>
+                <span class="time">2小时前</span>
+            </div>
+            <p>
+                欸 朋友们好啊
+                我是浑元形意太极门掌门人马保国
+                刚才有个朋友问我
+                马老师发生什么事啦
+                我说怎么回事
+                给我发了几张截图
+                我一看
+                哦
+                原来是昨天
+                有两个年轻人
+                三十多岁
+                一个体重九十多公斤
+                一个体重八十多公斤
+                他们说
+                欸
+                有一个说是
+                我在健身房练功
+                颈椎练坏了
+                马老师你能不能教教我浑元功法
+                欸
+                帮助治疗一下我的颈椎病
+                我说可以
+                我说你在健身房练死劲儿不好用
+                他不服气
+                欸
+                我说小朋友
+                你两个手来折我一个手指头
+                他折不动
+                他说你这也没用
+                我说我这有用
+                这是化劲儿
+                传统功夫是讲化劲儿的
+                四两拨千斤
+                二百多斤的英国大力士
+                都握不动我这一个手指
+                他说要和我试试
+                我说可以
+                欸
+                我一说他啪一下就站起来了
+                很快啊
+                然后上来就是
+                一个左正蹬
+                一个右鞭腿
+                一个左刺拳
+                我全部防出去了啊
+                防出去以后自然是
+                传统功夫以点到为止
+                右拳放在他鼻子上
+                没打他
+                我笑一下
+                准备收拳
+                因为这时间
+                按照传统功夫的点到为止
+                他就输了
+                如果我这一拳发力
+                一拳就把他鼻子打骨折了
+                放在他鼻子上没用打他
+                他也承认
+                我先打到他面部
+                他不知道拳放在他鼻子上
+                他承认我先打到他面部啊
+                我收拳的时间不打了
+                他突然袭击左刺拳来打我脸
+                啊
+                我大意了啊
+                没有闪
+                欸
+                他的左拳给我眼
+                给我右眼蹭了一下
+                但没关系啊
+                他也说
+                他结束也说了
+                两分多钟以后
+                当时流眼泪了捂着眼
+                我说停停
+                然后两分钟以后
+                两分多钟以后
+                就好了
+                我说小伙子你不讲武德你不懂
+                他说马老师对不起对不起
+                我不懂规矩
+                啊
+                我是
+                他说他是乱打的
+                他可不是乱打的啊
+                正蹬
+                鞭腿
+                左刺拳
+                训练有素
+                后来他说他练过三四年泰拳啊
+                看来是有备而来
+                这两个年轻人
+                不讲武德
+                来
+                骗
+                来
+                偷袭
+                我69岁的
+                老同志
+                这好吗
+                这不好
+                我劝
+                这位
+                年轻人
+                好自为之
+                好好反思
+                不要再犯这样的聪明
+                小聪明
+                啊
+                额
+                武林要以和为贵
+                要讲武德
+                不要搞
+                窝里斗
+                谢谢朋友们
+            </p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link count">点赞 666</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link count">评论 233</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container article">
+            <div class="author-time">
+                <a class="author-name h4">马保国</a>
+                <span class="time">2小时前</span>
+            </div>
+            <p>
+                欸 朋友们好啊
+                我是浑元形意太极门掌门人马保国
+                刚才有个朋友问我
+                马老师发生什么事啦
+                我说怎么回事
+                给我发了几张截图
+                我一看
+                哦
+                原来是昨天
+                有两个年轻人
+                三十多岁
+                一个体重九十多公斤
+                一个体重八十多公斤
+                他们说
+                欸
+                有一个说是
+                我在健身房练功
+                颈椎练坏了
+                马老师你能不能教教我浑元功法
+                欸
+                帮助治疗一下我的颈椎病
+                我说可以
+                我说你在健身房练死劲儿不好用
+                他不服气
+                欸
+                我说小朋友
+                你两个手来折我一个手指头
+                他折不动
+                他说你这也没用
+                我说我这有用
+                这是化劲儿
+                传统功夫是讲化劲儿的
+                四两拨千斤
+                二百多斤的英国大力士
+                都握不动我这一个手指
+                他说要和我试试
+                我说可以
+                欸
+                我一说他啪一下就站起来了
+                很快啊
+                然后上来就是
+                一个左正蹬
+                一个右鞭腿
+                一个左刺拳
+                我全部防出去了啊
+                防出去以后自然是
+                传统功夫以点到为止
+                右拳放在他鼻子上
+                没打他
+                我笑一下
+                准备收拳
+                因为这时间
+                按照传统功夫的点到为止
+                他就输了
+                如果我这一拳发力
+                一拳就把他鼻子打骨折了
+                放在他鼻子上没用打他
+                他也承认
+                我先打到他面部
+                他不知道拳放在他鼻子上
+                他承认我先打到他面部啊
+                我收拳的时间不打了
+                他突然袭击左刺拳来打我脸
+                啊
+                我大意了啊
+                没有闪
+                欸
+                他的左拳给我眼
+                给我右眼蹭了一下
+                但没关系啊
+                他也说
+                他结束也说了
+                两分多钟以后
+                当时流眼泪了捂着眼
+                我说停停
+                然后两分钟以后
+                两分多钟以后
+                就好了
+                我说小伙子你不讲武德你不懂
+                他说马老师对不起对不起
+                我不懂规矩
+                啊
+                我是
+                他说他是乱打的
+                他可不是乱打的啊
+                正蹬
+                鞭腿
+                左刺拳
+                训练有素
+                后来他说他练过三四年泰拳啊
+                看来是有备而来
+                这两个年轻人
+                不讲武德
+                来
+                骗
+                来
+                偷袭
+                我69岁的
+                老同志
+                这好吗
+                这不好
+                我劝
+                这位
+                年轻人
+                好自为之
+                好好反思
+                不要再犯这样的聪明
+                小聪明
+                啊
+                额
+                武林要以和为贵
+                要讲武德
+                不要搞
+                窝里斗
+                谢谢朋友们
+            </p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link count">点赞 666</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link count">评论 233</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container article">
+            <div class="author-time">
+                <a class="author-name h4">马保国</a>
+                <span class="time">2小时前</span>
+            </div>
+            <p>
+                欸 朋友们好啊
+                我是浑元形意太极门掌门人马保国
+                刚才有个朋友问我
+                马老师发生什么事啦
+                我说怎么回事
+                给我发了几张截图
+                我一看
+                哦
+                原来是昨天
+                有两个年轻人
+                三十多岁
+                一个体重九十多公斤
+                一个体重八十多公斤
+                他们说
+                欸
+                有一个说是
+                我在健身房练功
+                颈椎练坏了
+                马老师你能不能教教我浑元功法
+                欸
+                帮助治疗一下我的颈椎病
+                我说可以
+                我说你在健身房练死劲儿不好用
+                他不服气
+                欸
+                我说小朋友
+                你两个手来折我一个手指头
+                他折不动
+                他说你这也没用
+                我说我这有用
+                这是化劲儿
+                传统功夫是讲化劲儿的
+                四两拨千斤
+                二百多斤的英国大力士
+                都握不动我这一个手指
+                他说要和我试试
+                我说可以
+                欸
+                我一说他啪一下就站起来了
+                很快啊
+                然后上来就是
+                一个左正蹬
+                一个右鞭腿
+                一个左刺拳
+                我全部防出去了啊
+                防出去以后自然是
+                传统功夫以点到为止
+                右拳放在他鼻子上
+                没打他
+                我笑一下
+                准备收拳
+                因为这时间
+                按照传统功夫的点到为止
+                他就输了
+                如果我这一拳发力
+                一拳就把他鼻子打骨折了
+                放在他鼻子上没用打他
+                他也承认
+                我先打到他面部
+                他不知道拳放在他鼻子上
+                他承认我先打到他面部啊
+                我收拳的时间不打了
+                他突然袭击左刺拳来打我脸
+                啊
+                我大意了啊
+                没有闪
+                欸
+                他的左拳给我眼
+                给我右眼蹭了一下
+                但没关系啊
+                他也说
+                他结束也说了
+                两分多钟以后
+                当时流眼泪了捂着眼
+                我说停停
+                然后两分钟以后
+                两分多钟以后
+                就好了
+                我说小伙子你不讲武德你不懂
+                他说马老师对不起对不起
+                我不懂规矩
+                啊
+                我是
+                他说他是乱打的
+                他可不是乱打的啊
+                正蹬
+                鞭腿
+                左刺拳
+                训练有素
+                后来他说他练过三四年泰拳啊
+                看来是有备而来
+                这两个年轻人
+                不讲武德
+                来
+                骗
+                来
+                偷袭
+                我69岁的
+                老同志
+                这好吗
+                这不好
+                我劝
+                这位
+                年轻人
+                好自为之
+                好好反思
+                不要再犯这样的聪明
+                小聪明
+                啊
+                额
+                武林要以和为贵
+                要讲武德
+                不要搞
+                窝里斗
+                谢谢朋友们
+            </p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link count">点赞 666</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link count">评论 233</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container article">
+            <div class="author-time">
+                <a class="author-name h4">马保国</a>
+                <span class="time">2小时前</span>
+            </div>
+            <p>
+                欸 朋友们好啊
+                我是浑元形意太极门掌门人马保国
+                刚才有个朋友问我
+                马老师发生什么事啦
+                我说怎么回事
+                给我发了几张截图
+                我一看
+                哦
+                原来是昨天
+                有两个年轻人
+                三十多岁
+                一个体重九十多公斤
+                一个体重八十多公斤
+                他们说
+                欸
+                有一个说是
+                我在健身房练功
+                颈椎练坏了
+                马老师你能不能教教我浑元功法
+                欸
+                帮助治疗一下我的颈椎病
+                我说可以
+                我说你在健身房练死劲儿不好用
+                他不服气
+                欸
+                我说小朋友
+                你两个手来折我一个手指头
+                他折不动
+                他说你这也没用
+                我说我这有用
+                这是化劲儿
+                传统功夫是讲化劲儿的
+                四两拨千斤
+                二百多斤的英国大力士
+                都握不动我这一个手指
+                他说要和我试试
+                我说可以
+                欸
+                我一说他啪一下就站起来了
+                很快啊
+                然后上来就是
+                一个左正蹬
+                一个右鞭腿
+                一个左刺拳
+                我全部防出去了啊
+                防出去以后自然是
+                传统功夫以点到为止
+                右拳放在他鼻子上
+                没打他
+                我笑一下
+                准备收拳
+                因为这时间
+                按照传统功夫的点到为止
+                他就输了
+                如果我这一拳发力
+                一拳就把他鼻子打骨折了
+                放在他鼻子上没用打他
+                他也承认
+                我先打到他面部
+                他不知道拳放在他鼻子上
+                他承认我先打到他面部啊
+                我收拳的时间不打了
+                他突然袭击左刺拳来打我脸
+                啊
+                我大意了啊
+                没有闪
+                欸
+                他的左拳给我眼
+                给我右眼蹭了一下
+                但没关系啊
+                他也说
+                他结束也说了
+                两分多钟以后
+                当时流眼泪了捂着眼
+                我说停停
+                然后两分钟以后
+                两分多钟以后
+                就好了
+                我说小伙子你不讲武德你不懂
+                他说马老师对不起对不起
+                我不懂规矩
+                啊
+                我是
+                他说他是乱打的
+                他可不是乱打的啊
+                正蹬
+                鞭腿
+                左刺拳
+                训练有素
+                后来他说他练过三四年泰拳啊
+                看来是有备而来
+                这两个年轻人
+                不讲武德
+                来
+                骗
+                来
+                偷袭
+                我69岁的
+                老同志
+                这好吗
+                这不好
+                我劝
+                这位
+                年轻人
+                好自为之
+                好好反思
+                不要再犯这样的聪明
+                小聪明
+                啊
+                额
+                武林要以和为贵
+                要讲武德
+                不要搞
+                窝里斗
+                谢谢朋友们
+            </p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link count">点赞 666</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link count">评论 233</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">上一页</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">10</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">下一页</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

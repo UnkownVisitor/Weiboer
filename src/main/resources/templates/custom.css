@@ -1,0 +1,24 @@
+.sort-by {
+    padding: 0.5rem 0.5rem;
+}
+
+.article {
+    margin-top: 24px;
+}
+
+.author-time {
+    margin-bottom: 6px;
+}
+
+.author-name {
+    color: black;
+    text-decoration: none;
+}
+
+.time {
+    color: gray;
+}
+
+.count {
+    padding: 0rem 0.25rem;
+}
