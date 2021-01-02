@@ -1,14 +1,14 @@
 package web.weiboer.controller;
-import web.weiboer.dataStruct.weiboerContent;
-import web.weiboer.dataStruct.weiboerUser;
+import web.weiboer.dao.ContentRepository;
+import web.weiboer.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.concurrent.Callable;
+@RestController
 public class mainController {
+    @Autowired
+    private UserRepository productRepository;
+    @Autowired
+    private ContentRepository contentRepository;
+
 }
