@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
@@ -15,14 +15,14 @@
 </div>
 
 <div class="container" style="max-width: 360px">
-    <form>
+    <form th:action="@{/login}" method="post" th:object="${one}">
         <div>
             <label for="Email" class="form-label">邮箱</label>
-            <input type="email" class="form-control" id="Email">
+            <input type="email" class="form-control" id="Email" th:field="*{email}">
         </div>
         <div>
             <label for="Password" class="form-label">密码</label>
-            <input type="password" class="form-control" id="Password">
+            <input type="password" class="form-control" id="Password" th:field="*{password}">
             <div class="form-text text-center">
                 <a href="#">忘记密码</a>
             </div>
@@ -30,7 +30,7 @@
         <div class="text-center" style="margin-top: 12px">
             <button type="submit" class="btn btn-primary">登录</button>
             <div class="form-text">
-                <a href="#">还没有注册？立即注册</a>
+                <a href="/reg" methods="GET">还没有注册？立即注册</a>
             </div>
         </div>
     </form>

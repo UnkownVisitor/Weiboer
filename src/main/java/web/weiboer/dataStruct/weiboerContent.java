@@ -18,7 +18,7 @@ public class weiboerContent {
     private Timestamp time;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn
     private weiboerUser poster;
 

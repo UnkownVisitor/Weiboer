@@ -15,7 +15,7 @@ public class weiboerPictures {
     private Blob content;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn
-    private weiboerUser mother;
+    private weiboerUser poster;
 }
