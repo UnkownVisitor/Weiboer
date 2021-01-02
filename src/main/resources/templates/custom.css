@@ -22,3 +22,10 @@
 .count {
     padding: 0rem 0.25rem;
 }
+
+.jumbotron {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: 0.3rem;
+}
