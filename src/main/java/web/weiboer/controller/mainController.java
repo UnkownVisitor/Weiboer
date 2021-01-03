@@ -148,9 +148,11 @@ public class mainController {
     @GetMapping(value={"/", "main"})
     public String index(Model model,
                         @RequestParam(value = "start",defaultValue = "0")Integer page,
-                        @RequestParam(value = "limit",defaultValue = "10")Integer limit){
+                        @RequestParam(value = "limit",defaultValue = "10")Integer limit,
+                        @RequestParam(value = "method",defaultValue = "time")String method){
+        System.out.println("sorted by "+method);
         page = page <0 ? 0 :page;
-        Sort sort =Sort.by(Sort.Direction.DESC,"time");
+        Sort sort =Sort.by(Sort.Direction.DESC,method);
         Pageable pageable = PageRequest.of(page,limit,sort);
         Page<weiboerContent> contents = contentRepository.findAll(pageable);
         model.addAttribute("contents",contents);
@@ -170,8 +172,8 @@ public class mainController {
         nowContentID++;
         posting.setPoster(userRepository.findByEmail(u_email));
         posting.setTime(new Timestamp(System.currentTimeMillis()));
-        posting.setLike_num(0);
-        posting.setComment_num(0);
+        posting.setLikeNum(0);
+        posting.setCommentNum(0);
         System.out.println(u_email);
         System.out.println(posting.getContent());
         contentRepository.save(posting);
@@ -207,7 +209,7 @@ public class mainController {
         posting.setTime(new Timestamp(System.currentTimeMillis()));
         System.out.println(u_email);
         System.out.println(posting.getContent());
-        contentRepository.findById(id).get().setComment_num(contentRepository.findById(id).get().getComment_num()+1);
+        contentRepository.findById(id).get().setCommentNum(contentRepository.findById(id).get().getCommentNum()+1);
         commentRepository.save(posting);
         return "redirect:/detail?id="+id.toString();
     }
@@ -224,10 +226,6 @@ public class mainController {
         return mav;
     }
 
-    @RequestMapping("/api/img")
-    public String api_picture(@RequestParam(value = "img_id")Long img_id){
-        return "";
-    }
     @RequestMapping("/api/comment")
     public String api_comment(){
         return "";

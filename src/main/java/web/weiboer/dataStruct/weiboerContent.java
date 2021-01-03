@@ -17,8 +17,8 @@ public class weiboerContent {
     private String content;
     private Timestamp time;
 
-    private Integer like_num;
-    private Integer comment_num;
+    private Integer likeNum;
+    private Integer commentNum;
 
     @JsonIgnore
     @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
