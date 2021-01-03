@@ -31,6 +31,9 @@ public class weiboerUser {
     private weiboerUser follower;
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<weiboerUser> myFollow = new ArrayList<>();
+    // 用户的like
+    @ManyToMany()
+    private List<weiboerContent> myLikes = new ArrayList<>();
 
     public weiboerUser(Long _id,String _name,String _pswd,String _email,Long _foNum,Long _foedNum)
     {id=_id;name = _name;password = _pswd;email = _email;foNum = _foNum;foedNum = _foedNum;}

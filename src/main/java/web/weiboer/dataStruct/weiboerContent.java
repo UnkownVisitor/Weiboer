@@ -17,6 +17,9 @@ public class weiboerContent {
     private String content;
     private Timestamp time;
 
+    private Integer like_num;
+    private Integer comment_num;
+
     @JsonIgnore
     @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn
@@ -24,4 +27,10 @@ public class weiboerContent {
 
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<weiboerPictures> picture;
+
+    @ManyToMany()
+    private List<weiboerUser> likes = new ArrayList<>();
+
+    public weiboerContent(){}
+    public weiboerContent(String _content,weiboerUser user){poster=user;content=_content;}
 }

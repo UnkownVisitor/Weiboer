@@ -1,11 +1,18 @@
 package web.weiboer.controller;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.HttpCookie;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import web.weiboer.dao.ContentRepository;
@@ -13,7 +20,6 @@ import web.weiboer.dao.PictureRepository;
 import web.weiboer.dao.UserRepository;
 import web.weiboer.dataStruct.weiboerUser;
 import web.weiboer.dataStruct.weiboerContent;
-import web.weiboer.dataStruct.weiboerPictures;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class mainController {
     private String u_email;
     private Long nowID = Long.valueOf(0);
+    private Long nowContentID = Long.valueOf(0);
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -106,9 +113,6 @@ public class mainController {
         cookie.setPath("/");
         response.addCookie(cookie);
         userRepository.save(temp);
-        model.addAttribute("u_email",temp.getEmail());
-        model.addAttribute("u_name",temp.getName());
-        model.addAttribute("u_id",temp.getId().toString());
         return "redirect:/main";
     }
 
@@ -140,11 +144,37 @@ public class mainController {
         return "redirect:/main";
     }
 
-    @RequestMapping({"/", "main"})
-    public ModelAndView index(Model model,
-                              @RequestParam(value = "page",defaultValue = "1")Integer page){
-        ModelAndView mav = new ModelAndView("home");
-        return mav;
+    @GetMapping(value={"/", "main"})
+    public String index(Model model,
+                        @RequestParam(value = "start",defaultValue = "0")Integer page,
+                        @RequestParam(value = "limit",defaultValue = "10")Integer limit){
+        page = page <0 ? 0 :page;
+        Sort sort =Sort.by(Sort.Direction.DESC,"time");
+        Pageable pageable = PageRequest.of(page,limit,sort);
+        Page<weiboerContent> contents = contentRepository.findAll(pageable);
+        model.addAttribute("contents",contents);
+        model.addAttribute("posting",new weiboerContent());
+        return "home";
+    }
+    @PostMapping(value="/main")
+    public String add_weibo(HttpServletRequest request,weiboerContent posting){
+        System.out.println("new content");
+        Cookie[] cookies = request.getCookies();
+        String u_email = null;
+        for(Cookie cookie :cookies){
+            if (cookie.getName().equals("u_email"))
+                u_email=cookie.getValue();
+        }
+        posting.setId(nowContentID);
+        nowContentID++;
+        posting.setPoster(userRepository.findByEmail(u_email));
+        posting.setTime(new Timestamp(System.currentTimeMillis()));
+        posting.setLike_num(0);
+        posting.setComment_num(0);
+        System.out.println(u_email);
+        System.out.println(posting.getContent());
+        contentRepository.save(posting);
+        return "redirect:/main";
     }
 
     @RequestMapping("/detail")

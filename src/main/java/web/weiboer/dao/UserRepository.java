@@ -5,7 +5,7 @@ import web.weiboer.dataStruct.weiboerUser;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<weiboerUser,Long> {
-    List<weiboerUser> findByEmail(String email);
+    weiboerUser findByEmail(String email);
     List<weiboerUser> findByEmailAndPassword(String email,String password);
     boolean existsByEmail(String email);
     boolean existsByEmailAndPassword(String email,String password);
