@@ -15,9 +15,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import web.weiboer.dao.CommentRepository;
 import web.weiboer.dao.ContentRepository;
-import web.weiboer.dao.PictureRepository;
 import web.weiboer.dao.UserRepository;
+import web.weiboer.dataStruct.weiboerComments;
 import web.weiboer.dataStruct.weiboerUser;
 import web.weiboer.dataStruct.weiboerContent;
 
@@ -36,7 +37,7 @@ public class mainController {
     @Autowired
     private ContentRepository contentRepository;
     @Autowired
-    private PictureRepository pictureRepository;
+    private CommentRepository commentRepository;
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(Model model){
@@ -178,17 +179,42 @@ public class mainController {
     }
 
     @RequestMapping("/detail")
-    public ModelAndView detail(Model model,
-                               @RequestParam(value = "id")Long id){
-        ModelAndView mav = new ModelAndView();
-        return mav;
+    public String detail(Model model, @RequestParam(value = "id")Long id){
+        System.out.println("find detail "+id.toString());
+        Optional<weiboerContent> content = contentRepository.findById(id);
+        if(content.isPresent()) {
+            System.out.println(content.get().getContent());
+            model.addAttribute("weibo", (weiboerContent)content.get());
+            List<weiboerComments> comments = commentRepository.findAllByFatherContent((weiboerContent)content.get());
+            model.addAttribute("comments", comments);
+        }
+        model.addAttribute("posting",new weiboerComments());
+        return "detail";
+    }
+    @PostMapping(value="/detail")
+    public String add_comment(HttpServletRequest request,weiboerComments posting, @RequestParam(value = "id")Long id){
+        System.out.println("new comment");
+        Cookie[] cookies = request.getCookies();
+        String u_email = null;
+        for(Cookie cookie :cookies){
+            if (cookie.getName().equals("u_email"))
+                u_email=cookie.getValue();
+        }
+        posting.setId(nowContentID);
+        nowContentID++;
+        posting.setPoster(userRepository.findByEmail(u_email));
+        posting.setFatherContent(contentRepository.findById(id).get());
+        posting.setTime(new Timestamp(System.currentTimeMillis()));
+        System.out.println(u_email);
+        System.out.println(posting.getContent());
+        contentRepository.findById(id).get().setComment_num(contentRepository.findById(id).get().getComment_num()+1);
+        commentRepository.save(posting);
+        return "redirect:/detail?id="+id.toString();
     }
 
-    @RequestMapping("/user")
-    public ModelAndView user(Model model,
-                             @RequestParam(value = "id")Long id){
-        ModelAndView mav = new ModelAndView();
-        return mav;
+    @RequestMapping("/user/{id}")
+    public String user(Model model, @RequestParam(value = "id")Long id){
+        return "user";
     }
 
     @RequestMapping("/forget")
@@ -196,11 +222,6 @@ public class mainController {
                             @RequestParam(value = "id")Long id){
         ModelAndView mav = new ModelAndView();
         return mav;
-    }
-
-    @RequestMapping("/api/weibo")
-    public String api_weibo(){
-        return "";
     }
 
     @RequestMapping("/api/img")

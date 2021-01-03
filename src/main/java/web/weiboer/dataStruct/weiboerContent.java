@@ -25,8 +25,8 @@ public class weiboerContent {
     @JoinColumn
     private weiboerUser poster;
 
-    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<weiboerPictures> picture;
+    @OneToMany(mappedBy = "fatherContent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<weiboerComments> comments = new ArrayList<>();
 
     @ManyToMany()
     private List<weiboerUser> likes = new ArrayList<>();

@@ -56,11 +56,11 @@
                 <p th:text="*{weibo.content}"></p>
                 <ul class="nav justify-content-end">
                     <li class="nav-item">
-                        <a th:href="@{/api/like(${weibo.id})}">点赞 </a>
+                        <a th:href="@{/api/like(id=${weibo.id})}">点赞 </a>
                         <a class="nav-link count" th:text="*{weibo.like_num}">点赞 666</a>
                     </li>
                     <li class="nav-item">
-                        <a th:href="@{/api/comment(${weibo.id})}">评论 </a>
+                        <a th:href="@{/detail(id=${weibo.id})}">评论 </a>
                         <a class="nav-link count" th:text="*{weibo.comment_num}">评论 233</a>
                     </li>
                 </ul>

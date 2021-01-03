@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
@@ -9,110 +9,85 @@
 
     <title>微博er——详情</title>
 </head>
-<body>
+<body onload="getLogedin()">
 <div class="jumbotron text-center">
     <h1>微博er——详情</h1>
 </div>
 
 <div class="container" style="max-width: 720px">
-    <div class="container article">
+    <div class="container article" th:object="${weibo}" th:remove="all-but-first">
         <div class="author-time">
-            <a class="author-name h4">马保国</a>
-            <span class="time">2小时前</span>
+            <a class="author-name h4" th:text="${weibo.poster.name}">马保国</a>
+            <span class="time" th:text="${weibo.time}">2小时前</span>
+            <p th:text="${weibo.content}"></p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a>点赞 </a>
+                    <a class="nav-link count" th:text="${weibo.like_num}">666</a>
+                </li>
+                <li class="nav-item">
+                    <a>评论 </a>
+                    <a class="nav-link count" th:text="${weibo.comment_num}">233</a>
+                </li>
+            </ul>
         </div>
-        <p>
-
-        </p>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <a class="nav-link count">点赞 666</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link count">评论 233</a>
-            </li>
-        </ul>
     </div>
     <div class="container">
-        <form>
+        <form method="post" th:action="@{/detail(id=${weibo.id})}" th:object="${posting}">
             <label for="comment" class="h3" style="margin-top: 12px">评论</label>
-            <textarea class="form-control" id="comment" disabled placeholder="请先登录"></textarea>
-            <button type="button" class="btn btn-primary" style="margin-top: 6px" disabled>发表</button>
+            <textarea class="form-control" id="comment" disabled placeholder="请先登录" th:field="${posting.content}"></textarea>
+            <button type="submit" class="btn btn-primary" id="send_button" style="margin-top: 6px" disabled>发表</button>
         </form>
     </div>
-    <div class="container article">
+    <div class="container article" th:each="comment:${comments}">
         <div class="author-time">
-            <a class="author-name h4">不讲武德年轻人</a>
-            <span class="time">1小时前</span>
+            <a class="author-name h4" th:text="${comment.poster.name}">不讲武德年轻人</a>
+            <span class="time" th:text="${comment.time}">1小时前</span>
+            <p th:text="${comment.content}">对不起我是乱打的</p>
         </div>
-        <p>
-            对不起 对不起 马老师 我是乱打的
-        </p>
     </div>
-    <div class="container article">
-        <div class="author-time">
-            <a class="author-name h4">不讲武德年轻人</a>
-            <span class="time">1小时前</span>
-        </div>
-        <p>
-            对不起 对不起 马老师 我是乱打的
-        </p>
-    </div>
-    <div class="container article">
-        <div class="author-time">
-            <a class="author-name h4">不讲武德年轻人</a>
-            <span class="time">1小时前</span>
-        </div>
-        <p>
-            对不起 对不起 马老师 我是乱打的
-        </p>
-    </div>
-    <div class="container article">
-        <div class="author-time">
-            <a class="author-name h4">不讲武德年轻人</a>
-            <span class="time">1小时前</span>
-        </div>
-        <p>
-            对不起 对不起 马老师 我是乱打的
-        </p>
-    </div>
-    <div class="container article">
-        <div class="author-time">
-            <a class="author-name h4">不讲武德年轻人</a>
-            <span class="time">1小时前</span>
-        </div>
-        <p>
-            对不起 对不起 马老师 我是乱打的
-        </p>
-    </div>
-    <nav>
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#">上一页</a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item disabled">
-                <a class="page-link" href="#">...</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">10</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">下一页</a>
-            </li>
-        </ul>
-    </nav>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
+<script>
+    function getLogedin(){
+        console.log("getting loged in!");
+        cookies = document.cookie;
+        cookies = cookies.replace(/\s/,"");
+        var cookie_array = cookies.split(";");
+        console.log(cookie_array.length)
+        console.log(cookie_array)
+        var count = 0;
+        for(i=0;i<cookie_array.length;i++){
+            var c = cookie_array[i];
+            var array = c.split("=");
+            console.log(c)
+            if(array[0]==="u_name" && array[1]!=="") {
+                console.log("set lower button!")
+                document.getElementById("comment").setAttribute("placeholder", "");
+                document.getElementById("comment").disabled = false;
+                document.getElementById("send_button").disabled = false;
+                console.log("set lower button done")
+                count++;
+            }
+            else if(array[0]===" u_id" && array[1]!==""){
+                console.log("set upper button!")
+                document.getElementById("first_button").setAttribute("onclick", "window.location.href='/user/"+array[1]+"'");
+                document.getElementById("second_button").setAttribute("onclick", "window.location.href='/logout/"+array[1]+"'");
+                document.getElementById("first_button").innerText="我的";
+                document.getElementById("second_button").innerText="注销";
+                console.log("set upper button done")
+                count++;
+            }
+            if(count===2)
+                return true;
+        }
+        document.getElementById("new").setAttribute("placeholder","请先登录")
+        document.getElementById("new").disabled = true;
+        return false;
+    }
+</script>
 </body>
 </html>
