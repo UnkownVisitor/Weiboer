@@ -22,6 +22,6 @@ public class weiboerContent {
     @JoinColumn
     private weiboerUser poster;
 
-    @OneToOne(mappedBy = "poster", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private weiboerPictures picture;
+    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<weiboerPictures> picture;
 }

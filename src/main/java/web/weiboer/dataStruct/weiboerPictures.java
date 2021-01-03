@@ -12,7 +12,10 @@ public class weiboerPictures {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Blob content;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name="picture",columnDefinition = "longblob",nullable = true)
+    private byte[] picture;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

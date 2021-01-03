@@ -3,6 +3,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.net.HttpCookie;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +14,10 @@ import web.weiboer.dao.UserRepository;
 import web.weiboer.dataStruct.weiboerUser;
 import web.weiboer.dataStruct.weiboerContent;
 import web.weiboer.dataStruct.weiboerPictures;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -31,7 +37,7 @@ public class mainController {
         return "login";
     }
     @PostMapping(value="/login")
-    public String login_func(Model model,weiboerUser temp){
+    public String login_func(HttpServletResponse response,Model model,weiboerUser temp){
         if (userRepository.existsByEmailAndPassword(temp.getEmail(),temp.getPassword())) {
             temp = userRepository.findByEmailAndPassword(temp.getEmail(), temp.getPassword()).get(0);
             System.out.println("login!");
@@ -39,6 +45,21 @@ public class mainController {
             System.out.println(temp.getEmail());
             System.out.println(temp.getPassword());
             model.addAttribute("one",null);
+            model.addAttribute("u_email",temp.getEmail());
+            model.addAttribute("u_name",temp.getName());
+            Cookie cookie = new Cookie("u_email",temp.getEmail());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            cookie = new Cookie("u_name",temp.getName());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            cookie = new Cookie("u_id",temp.getId().toString());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
             return "redirect:/main";
         }
         else{
@@ -55,6 +76,7 @@ public class mainController {
         }
         else{
             model.addAttribute("u_email",Email);
+            model.addAttribute("u_name",Username);
             weiboerUser user = new weiboerUser(nowID,Username,Password,Email, 0L, 0L);
             userRepository.save(user);
             return "redirect:/main";
@@ -62,7 +84,7 @@ public class mainController {
     }
 
     @PostMapping(value="/reg")
-    public String reg_func(weiboerUser temp){
+    public String reg_func(HttpServletResponse response,Model model,weiboerUser temp){
         temp.setId(nowID);
         temp.setFoNum((long) 0);
         temp.setFoedNum((long) 0);
@@ -71,7 +93,50 @@ public class mainController {
         System.out.println(temp.getName());
         System.out.println(temp.getEmail());
         System.out.println(temp.getPassword());
+        Cookie cookie = new Cookie("u_email",temp.getEmail());
+        cookie.setMaxAge(24 * 60 * 60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        cookie = new Cookie("u_name",temp.getName());
+        cookie.setMaxAge(24 * 60 * 60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        cookie = new Cookie("u_id",temp.getId().toString());
+        cookie.setMaxAge(24 * 60 * 60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         userRepository.save(temp);
+        model.addAttribute("u_email",temp.getEmail());
+        model.addAttribute("u_name",temp.getName());
+        model.addAttribute("u_id",temp.getId().toString());
+        return "redirect:/main";
+    }
+
+    @DeleteMapping(value="/logout/{u_id}")
+    public String logout(HttpServletRequest request,HttpServletResponse response,@PathVariable int u_id)
+    {
+        System.out.println("logout! "+u_id);
+        Cookie[] cookies = request.getCookies();
+        if(cookies==null)System.out.println("no cookies!");
+        else{
+            for (Cookie tempc:cookies){
+                if(tempc.getName().equals("u_id"))
+                {
+                    if (Objects.equals(tempc.getValue(), String.valueOf(u_id)))
+                    {
+                        for(Cookie cookie:cookies){
+                            if(cookie.getName().equals("u_id")||cookie.getName().equals("u_email")||cookie.getName().equals("u_name")){
+                                System.out.println("set "+cookie.getName()+cookie.getValue());
+                                cookie.setMaxAge(0);
+                                System.out.println("set "+cookie.getName()+cookie.getMaxAge());
+                                response.addCookie(cookie);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
         return "redirect:/main";
     }
 
