@@ -156,6 +156,7 @@ public class mainController {
             weiboerUser me = userRepository.findById(tempId).get();
             model.addAttribute("me", me);
         }
+        model.addAttribute("method",method);
         model.addAttribute("contents",contents);
         model.addAttribute("posting",new weiboerContent());
         return "home";
@@ -319,6 +320,7 @@ public class mainController {
             cookie.setPath("/");
             response.addCookie(cookie);
         }
+        model.addAttribute("method",method);
         model.addAttribute("thisUser",user.get());
         model.addAttribute("contents",contents);
         return "user";

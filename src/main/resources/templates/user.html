@@ -114,16 +114,16 @@
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=0)}">[首页]</a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" th:if="${not contents.isFirst()}" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=${contents.number-1})}">[上一页]</a>
+                <a class="page-link" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=0,method=${method})}">[首页]</a>
             </li>
             <li class="page-item">
-                <a class="page-link" th:if="${not contents.isLast()}" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=${contents.number+1})}">[下一页]</a>
+                <a class="page-link" th:if="${not contents.isFirst()}" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=${contents.number-1},method=${method})}">[上一页]</a>
             </li>
             <li class="page-item">
-                <a class="page-link" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=${contents.totalPages-1})}">[末页]</a>
+                <a class="page-link" th:if="${not contents.isLast()}" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=${contents.number+1},method=${method})}">[下一页]</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="@{${#httpServletRequest.getRequestURL() +'?'+ #httpServletRequest.getQueryString() }(start=${contents.totalPages-1},method=${method})}">[末页]</a>
             </li>
         </ul>
     </nav>
