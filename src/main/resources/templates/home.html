@@ -51,7 +51,7 @@
         </div>
         <div class="container article" th:each="weibo:${contents}" th:remove="all-but-first" id="main_container">
             <div class="author-time">
-                <a class="author-name h4" th:text="${weibo.poster.getName()}">马保国</a>
+                <a class="author-name h4" th:text="${weibo.poster.getName()}" th:href="@{/user(id=${weibo.getPoster().getId()})}">马保国</a>
                 <span class="time" th:text="${weibo.time}">2小时前</span>
                 <p th:text="${weibo.content}"></p>
                 <ul class="nav justify-content-end" th:object="${me}">

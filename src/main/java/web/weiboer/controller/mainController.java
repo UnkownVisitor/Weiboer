@@ -131,9 +131,11 @@ public class mainController {
         Pageable pageable = PageRequest.of(page,limit,sort);
         Page<weiboerContent> contents = contentRepository.findAll(pageable);
         String tempEmail = "";
-        for(Cookie cookie:request.getCookies()){
-            if(Objects.equals(cookie.getName(), "u_email")){
-                tempEmail = cookie.getValue();
+        if(request.getCookies()!=null){
+            for (Cookie cookie : request.getCookies()) {
+                if (Objects.equals(cookie.getName(), "u_email")) {
+                    tempEmail = cookie.getValue();
+                }
             }
         }
         if(userRepository.findByEmail(tempEmail)==null){System.out.println("getting user error!");}
@@ -144,12 +146,14 @@ public class mainController {
             response.addCookie(cookie);
         }
         Long tempId = Long.valueOf(-1);
-        for(Cookie cookie:request.getCookies()){
-            if(Objects.equals(cookie.getName(), "u_id")){
-                tempId = Long.valueOf(cookie.getValue());
-            }
-            if(Objects.equals(cookie.getName(), " u_id")){
-                tempId = Long.valueOf(cookie.getValue());
+        if(request.getCookies()!=null){
+            for(Cookie cookie:request.getCookies()){
+                if(Objects.equals(cookie.getName(), "u_id")){
+                    tempId = Long.valueOf(cookie.getValue());
+                }
+                if(Objects.equals(cookie.getName(), " u_id")){
+                    tempId = Long.valueOf(cookie.getValue());
+                }
             }
         }
         if(userRepository.findById(tempId).isPresent()) {
@@ -166,9 +170,11 @@ public class mainController {
         System.out.println("new content");
         Cookie[] cookies = request.getCookies();
         String u_email = null;
-        for(Cookie cookie :cookies){
-            if (cookie.getName().equals("u_email"))
-                u_email=cookie.getValue();
+        if(request.getCookies()!=null){
+            for(Cookie cookie :cookies){
+                if (cookie.getName().equals("u_email"))
+                    u_email=cookie.getValue();
+            }
         }
 //        posting.setId(nowContentID);
 //        nowContentID++;
@@ -195,12 +201,14 @@ public class mainController {
         }
         model.addAttribute("posting",new weiboerComments());
         Long tempId = Long.valueOf(-1);
-        for(Cookie cookie:request.getCookies()){
-            if(Objects.equals(cookie.getName(), "u_id")){
-                tempId = Long.valueOf(cookie.getValue());
-            }
-            if(Objects.equals(cookie.getName(), " u_id")){
-                tempId = Long.valueOf(cookie.getValue());
+        if(request.getCookies()!=null){
+            for(Cookie cookie:request.getCookies()){
+                if(Objects.equals(cookie.getName(), "u_id")){
+                    tempId = Long.valueOf(cookie.getValue());
+                }
+                if(Objects.equals(cookie.getName(), " u_id")){
+                    tempId = Long.valueOf(cookie.getValue());
+                }
             }
         }
         if(userRepository.findById(tempId).isPresent()) {
@@ -215,14 +223,17 @@ public class mainController {
         System.out.println("new comment");
         Cookie[] cookies = request.getCookies();
         String u_email = null;
-        for(Cookie cookie :cookies){
-            if (cookie.getName().equals("u_email"))
-                u_email=cookie.getValue();
+        if(request.getCookies()!=null){
+            for(Cookie cookie :cookies){
+                if (cookie.getName().equals("u_email"))
+                    u_email=cookie.getValue();
+            }
         }
         if(contentRepository.findById(id).isPresent()) {
             posting.setPoster(userRepository.findByEmail(u_email));
             posting.setFatherContent(contentRepository.findById(id).get());
             posting.setTime(new Timestamp(System.currentTimeMillis()));
+            posting.setId(null);
             System.out.println(u_email);
             System.out.println(posting.getContent());
             contentRepository.findById(id).get().setCommentNum(contentRepository.findById(id).get().getCommentNum() + 1);
@@ -236,9 +247,11 @@ public class mainController {
                        HttpServletRequest request,@RequestParam(value="source")String source){
         Long uId = Long.valueOf(-1);
         System.out.println(source);
-        for(Cookie cookie:request.getCookies()){
-            if (cookie.getName().equals("u_id")||cookie.getName().equals(" u_id")){
-                uId = Long.valueOf(cookie.getValue());
+        if(request.getCookies()!=null){
+            for(Cookie cookie:request.getCookies()){
+                if (cookie.getName().equals("u_id")||cookie.getName().equals(" u_id")){
+                    uId = Long.valueOf(cookie.getValue());
+                }
             }
         }
         System.out.println("uid: "+uId.toString());
@@ -306,12 +319,14 @@ public class mainController {
         Sort sort =Sort.by(Sort.Direction.DESC,method);
         Pageable pageable = PageRequest.of(page,limit,sort);
         String tempEmail = "";
-        for(Cookie cookie:request.getCookies()){
-            if(Objects.equals(cookie.getName(), "u_email")){
-                tempEmail = cookie.getValue();
+        if(request.getCookies()!=null){
+            for(Cookie cookie:request.getCookies()){
+                if(Objects.equals(cookie.getName(), "u_email")){
+                    tempEmail = cookie.getValue();
+                }
             }
         }
-        Optional<weiboerUser> user = userRepository.findById(Long.valueOf(id));
+        Optional<weiboerUser> user = userRepository.findById(id);
         Page<weiboerContent> contents = contentRepository.findAllPageByPoster(user,pageable);
         if(!user.isPresent()){System.out.println("getting user error!");}
         else{
