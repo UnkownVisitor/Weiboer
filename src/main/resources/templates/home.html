@@ -27,7 +27,7 @@
         <form method="post" th:action="@{/main}" th:object="${posting}">
             <div class="container">
                 <label for="new" class="h3" style="margin-top: 12px">说点什么吧</label>
-                <textarea class="form-control" id="new" disabled="disabled" placeholder="请先登录" th:field="*{content}"></textarea>
+                <textarea class="form-control" id="new" disabled="disabled" placeholder="请先登录" th:field="${posting.content}"></textarea>
                 <button id="send_button" type="submit" class="btn btn-primary" style="margin-top: 6px" disabled>发表</button>
             </div>
         </form>
@@ -51,17 +51,17 @@
         </div>
         <div class="container article" th:each="weibo:${contents}" th:remove="all-but-first" id="main_container">
             <div class="author-time">
-                <a class="author-name h4" th:text="*{weibo.poster.getName()}">马保国</a>
-                <span class="time" th:text="*{weibo.time}">2小时前</span>
-                <p th:text="*{weibo.content}"></p>
-                <ul class="nav justify-content-end">
+                <a class="author-name h4" th:text="${weibo.poster.getName()}">马保国</a>
+                <span class="time" th:text="${weibo.time}">2小时前</span>
+                <p th:text="${weibo.content}"></p>
+                <ul class="nav justify-content-end" th:object="${me}">
                     <li class="nav-item">
-                        <a th:href="@{/api/like(id=${weibo.id})}">点赞 </a>
-                        <a class="nav-link count" th:text="*{weibo.likeNum}">点赞 666</a>
+                        <a th:href="@{/api/like(id=${weibo.id},source='main?start='+${contents.number})}">赞 </a>
+                        <a class="nav-link count" th:text="${weibo.likeNum}">点赞 666</a>
                     </li>
                     <li class="nav-item">
                         <a th:href="@{/detail(id=${weibo.id})}">评论 </a>
-                        <a class="nav-link count" th:text="*{weibo.commentNum}">评论 233</a>
+                        <a class="nav-link count" th:text="${weibo.commentNum}">评论 233</a>
                     </li>
                 </ul>
             </div>

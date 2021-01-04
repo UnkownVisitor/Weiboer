@@ -16,8 +16,10 @@ public class weiboerUser {
     private String name;
     private String password;
     private String email;
-    private Long foNum;
-    private Long foedNum;
+    private Long foNum= Long.valueOf(0);
+    private Long foedNum= Long.valueOf(0);
+    private Long myLikeNum= Long.valueOf(0);
+    private String myLikes="";
     // 用户发的微博
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<weiboerContent> postedList = new ArrayList<>();
@@ -31,9 +33,6 @@ public class weiboerUser {
     private weiboerUser follower;
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<weiboerUser> myFollow = new ArrayList<>();
-    // 用户的like
-    @ManyToMany()
-    private List<weiboerContent> myLikes = new ArrayList<>();
     // 用户的comment
     @OneToMany()
     private List<weiboerComments> myComments = new ArrayList<>();

@@ -20,6 +20,8 @@ public class weiboerContent {
     private Integer likeNum;
     private Integer commentNum;
 
+    private String likeList="";
+
     @JsonIgnore
     @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn
@@ -27,9 +29,6 @@ public class weiboerContent {
 
     @OneToMany(mappedBy = "fatherContent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<weiboerComments> comments = new ArrayList<>();
-
-    @ManyToMany()
-    private List<weiboerUser> likes = new ArrayList<>();
 
     public weiboerContent(){}
     public weiboerContent(String _content,weiboerUser user){poster=user;content=_content;}

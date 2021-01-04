@@ -10,20 +10,26 @@
     <title>微博er——详情</title>
 </head>
 <body onload="getLogedin()">
-<div class="jumbotron text-center">
-    <h1>微博er——详情</h1>
+<nav class="navbar sticky-top navbar-light bg-light">
+<div class="container-fluid">
+    <a class="navbar-brand" style="font-size: calc(1.325rem + 0.9vw)">微博er</a>
+    <div class="d-flex">
+        <button id="first_button" type="button" class="btn btn-outline-primary" style="margin-right: 6px"
+                onclick="window.location.href='/main'">主页</button>
+    </div>
 </div>
-
+</nav>
 <div class="container" style="max-width: 720px">
     <div class="container article" th:object="${weibo}" th:remove="all-but-first">
         <div class="author-time">
             <a class="author-name h4" th:text="${weibo.poster.name}">马保国</a>
             <span class="time" th:text="${weibo.time}">2小时前</span>
             <p th:text="${weibo.content}"></p>
-            <ul class="nav justify-content-end">
+            <ul class="nav justify-content-end" th:object="${me}">
                 <li class="nav-item">
-                    <a>点赞 </a>
-                    <a class="nav-link count" th:text="${weibo.likeNum}">666</a>
+                    <a th:if="${not weibo.getLikes().contains(me)}" th:href="@{/api/like(id=${weibo.id},source='detail?id='+${weibo.id})}">点赞 </a>
+                    <a th:if="${weibo.getLikes().contains(me)}" th:href="@{/api/like(id=${weibo.id},source='detail?id='+${weibo.id})}">取消 </a>
+                    <a class="nav-link count" th:text="${weibo.likeNum}">点赞 666</a>
                 </li>
                 <li class="nav-item">
                     <a>评论 </a>
@@ -74,7 +80,6 @@
             }
             else if(array[0]===" u_id" && array[1]!==""){
                 console.log("set upper button!")
-                document.getElementById("first_button").setAttribute("onclick", "window.location.href='/user/"+array[1]+"'");
                 document.getElementById("second_button").setAttribute("onclick", "window.location.href='/logout/"+array[1]+"'");
                 document.getElementById("first_button").innerText="我的";
                 document.getElementById("second_button").innerText="注销";

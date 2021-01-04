@@ -1,4 +1,5 @@
 package web.weiboer.controller;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -93,6 +92,10 @@ public class mainController {
 
     @PostMapping(value="/reg")
     public String reg_func(HttpServletResponse response,Model model,weiboerUser temp){
+        if(userRepository.findByEmail(temp.getEmail())!=null) {
+            System.out.println("email duplicate!");
+            return "redirect:/reg";
+        }
         temp.setId(nowID);
         temp.setFoNum((long) 0);
         temp.setFoedNum((long) 0);
@@ -117,44 +120,43 @@ public class mainController {
         return "redirect:/main";
     }
 
-    @GetMapping(value="/logout/{u_id}")
-    public String logout(HttpServletRequest request,HttpServletResponse response,@PathVariable int u_id)
-    {
-        System.out.println("logout! "+u_id);
-        Cookie[] cookies = request.getCookies();
-        if(cookies==null)System.out.println("no cookies!");
-        else{
-            for (Cookie tempc:cookies){
-                if(tempc.getName().equals("u_id"))
-                {
-                    if (Objects.equals(tempc.getValue(), String.valueOf(u_id)))
-                    {
-                        for(Cookie cookie:cookies){
-                            if(cookie.getName().equals("u_id")||cookie.getName().equals("u_email")||cookie.getName().equals("u_name")){
-                                System.out.println("set "+cookie.getName()+cookie.getValue());
-                                cookie.setMaxAge(0);
-                                System.out.println("set "+cookie.getName()+cookie.getMaxAge());
-                                response.addCookie(cookie);
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        return "redirect:/main";
-    }
-
     @GetMapping(value={"/", "main"})
     public String index(Model model,
                         @RequestParam(value = "start",defaultValue = "0")Integer page,
                         @RequestParam(value = "limit",defaultValue = "10")Integer limit,
-                        @RequestParam(value = "method",defaultValue = "time")String method){
+                        @RequestParam(value = "method",defaultValue = "time")String method,
+                        HttpServletRequest request,HttpServletResponse response){
         System.out.println("sorted by "+method);
         page = page <0 ? 0 :page;
         Sort sort =Sort.by(Sort.Direction.DESC,method);
         Pageable pageable = PageRequest.of(page,limit,sort);
         Page<weiboerContent> contents = contentRepository.findAll(pageable);
+        String tempEmail = "";
+        for(Cookie cookie:request.getCookies()){
+            if(Objects.equals(cookie.getName(), "u_email")){
+                tempEmail = cookie.getValue();
+            }
+        }
+        if(userRepository.findByEmail(tempEmail)==null){System.out.println("getting user error!");}
+        else{
+            Cookie cookie = new Cookie("u_id",userRepository.findByEmail(tempEmail).getId().toString());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+        Long tempId = Long.valueOf(-1);
+        for(Cookie cookie:request.getCookies()){
+            if(Objects.equals(cookie.getName(), "u_id")){
+                tempId = Long.valueOf(cookie.getValue());
+            }
+            if(Objects.equals(cookie.getName(), " u_id")){
+                tempId = Long.valueOf(cookie.getValue());
+            }
+        }
+        if(userRepository.findById(tempId).isPresent()) {
+            weiboerUser me = userRepository.findById(tempId).get();
+            model.addAttribute("me", me);
+        }
         model.addAttribute("contents",contents);
         model.addAttribute("posting",new weiboerContent());
         return "home";
@@ -168,8 +170,8 @@ public class mainController {
             if (cookie.getName().equals("u_email"))
                 u_email=cookie.getValue();
         }
-        posting.setId(nowContentID);
-        nowContentID++;
+//        posting.setId(nowContentID);
+//        nowContentID++;
         posting.setPoster(userRepository.findByEmail(u_email));
         posting.setTime(new Timestamp(System.currentTimeMillis()));
         posting.setLikeNum(0);
@@ -181,7 +183,8 @@ public class mainController {
     }
 
     @RequestMapping("/detail")
-    public String detail(Model model, @RequestParam(value = "id")Long id){
+    public String detail(Model model, @RequestParam(value = "id")Long id,
+                         HttpServletRequest request){
         System.out.println("find detail "+id.toString());
         Optional<weiboerContent> content = contentRepository.findById(id);
         if(content.isPresent()) {
@@ -191,10 +194,24 @@ public class mainController {
             model.addAttribute("comments", comments);
         }
         model.addAttribute("posting",new weiboerComments());
+        Long tempId = Long.valueOf(-1);
+        for(Cookie cookie:request.getCookies()){
+            if(Objects.equals(cookie.getName(), "u_id")){
+                tempId = Long.valueOf(cookie.getValue());
+            }
+            if(Objects.equals(cookie.getName(), " u_id")){
+                tempId = Long.valueOf(cookie.getValue());
+            }
+        }
+        if(userRepository.findById(tempId).isPresent()) {
+            weiboerUser me = userRepository.findById(tempId).get();
+            model.addAttribute("me", me);
+        }
         return "detail";
     }
     @PostMapping(value="/detail")
     public String add_comment(HttpServletRequest request,weiboerComments posting, @RequestParam(value = "id")Long id){
+        if(Objects.equals(posting.getContent(), "")){return "redirect:/detail?id="+id.toString();}
         System.out.println("new comment");
         Cookie[] cookies = request.getCookies();
         String u_email = null;
@@ -204,14 +221,79 @@ public class mainController {
         }
         posting.setId(nowContentID);
         nowContentID++;
-        posting.setPoster(userRepository.findByEmail(u_email));
-        posting.setFatherContent(contentRepository.findById(id).get());
-        posting.setTime(new Timestamp(System.currentTimeMillis()));
-        System.out.println(u_email);
-        System.out.println(posting.getContent());
-        contentRepository.findById(id).get().setCommentNum(contentRepository.findById(id).get().getCommentNum()+1);
-        commentRepository.save(posting);
+        if(contentRepository.findById(id).isPresent()) {
+            posting.setPoster(userRepository.findByEmail(u_email));
+            posting.setFatherContent(contentRepository.findById(id).get());
+            posting.setTime(new Timestamp(System.currentTimeMillis()));
+            System.out.println(u_email);
+            System.out.println(posting.getContent());
+            contentRepository.findById(id).get().setCommentNum(contentRepository.findById(id).get().getCommentNum() + 1);
+            commentRepository.save(posting);
+        }
         return "redirect:/detail?id="+id.toString();
+    }
+
+    @RequestMapping("/api/like")
+    public String like(Model model, @RequestParam(value="id")Long id,
+                       HttpServletRequest request,@RequestParam(value="source")String source){
+        Long uId = Long.valueOf(-1);
+        System.out.println(source);
+        for(Cookie cookie:request.getCookies()){
+            if (cookie.getName().equals("u_id")||cookie.getName().equals(" u_id")){
+                uId = Long.valueOf(cookie.getValue());
+            }
+        }
+        System.out.println("uid: "+uId.toString());
+        System.out.println("id: "+id.toString());
+        Optional<weiboerContent> _content = contentRepository.findById(id);
+        Optional<weiboerUser> _user = userRepository.findById(uId);
+        if(!_content.isPresent()){System.out.println("get content error!");}
+        else if(!_user.isPresent()){System.out.println("get content error!");}
+        else{
+            weiboerContent content = _content.get();
+            weiboerUser user = _user.get();
+            List<String> contentLiked = new ArrayList<>();
+            for(String i : content.getLikeList().split("&")){ contentLiked.add(i); }
+            contentLiked.remove("");
+//            System.out.println("before content liked "+content.getLikeNum().toString());
+//            System.out.println("before content liked "+content.getLikeList());
+//            System.out.println("before user liked "+user.getMyLikeNum().toString());
+//            System.out.println("before user liked "+user.getMyLikes());
+//            System.out.println(contentLiked);
+            if(contentLiked.contains(uId.toString())){
+                System.out.println("unlike!");
+                content.setLikeNum(content.getLikeNum()-1);
+                String temp = "";
+                contentLiked.remove(uId.toString());
+                for(String l:contentLiked){ temp=temp+l;temp=temp+"&"; }
+                content.setLikeList(temp);
+
+                user.setMyLikeNum(user.getMyLikeNum()-1);
+                List<String> myLikes = new ArrayList<>();
+                for(String i : user.getMyLikes().split("&")){ myLikes.add(i); }
+                myLikes.remove("");
+                myLikes.remove(id.toString());
+                temp = "";
+                for(String l:myLikes){ temp=temp+l;temp=temp+"&"; }
+                user.setMyLikes(temp);
+                contentRepository.save(content);
+                userRepository.save(user);
+            }
+            else{
+                System.out.println("like!");
+                content.setLikeNum(content.getLikeNum()+1);
+                content.setLikeList(content.getLikeList()+"&"+uId.toString());
+                user.setMyLikeNum(user.getMyLikeNum()+1);
+                user.setMyLikes(user.getMyLikes()+"&"+id.toString());
+                contentRepository.save(content);
+                userRepository.save(user);
+            }
+//            System.out.println("after content liked "+contentRepository.findById(id).get().getLikeNum().toString());
+//            System.out.println("after content liked "+contentRepository.findById(id).get().getLikeList());
+//            System.out.println("after user liked "+userRepository.findById(id).get().getMyLikeNum().toString());
+//            System.out.println("after user liked "+userRepository.findById(id).get().getMyLikes());
+        }
+        return "redirect:/"+source;
     }
 
     @RequestMapping("/user/{id}")
@@ -226,10 +308,6 @@ public class mainController {
         return mav;
     }
 
-    @RequestMapping("/api/comment")
-    public String api_comment(){
-        return "";
-    }
     @RequestMapping("/api/follow")
     public String api_follow(){
         return "";
@@ -238,6 +316,4 @@ public class mainController {
     public String api_follower(){
         return "";
     }
-
-
 }
