@@ -219,8 +219,6 @@ public class mainController {
             if (cookie.getName().equals("u_email"))
                 u_email=cookie.getValue();
         }
-        posting.setId(nowContentID);
-        nowContentID++;
         if(contentRepository.findById(id).isPresent()) {
             posting.setPoster(userRepository.findByEmail(u_email));
             posting.setFatherContent(contentRepository.findById(id).get());

@@ -12,7 +12,7 @@
 <body onload="getLogedin()">
 <nav class="navbar sticky-top navbar-light bg-light">
 <div class="container-fluid">
-    <a class="navbar-brand" style="font-size: calc(1.325rem + 0.9vw)">微博er</a>
+    <a class="navbar-brand" style="font-size: calc(1.325rem + 0.9vw)" id="mainTitle">微博er</a>
     <div class="d-flex">
         <button id="first_button" type="button" class="btn btn-outline-primary" style="margin-right: 6px"
                 onclick="window.location.href='/main'">主页</button>
@@ -27,8 +27,7 @@
             <p th:text="${weibo.content}"></p>
             <ul class="nav justify-content-end" th:object="${me}">
                 <li class="nav-item">
-                    <a th:if="${not weibo.getLikes().contains(me)}" th:href="@{/api/like(id=${weibo.id},source='detail?id='+${weibo.id})}">点赞 </a>
-                    <a th:if="${weibo.getLikes().contains(me)}" th:href="@{/api/like(id=${weibo.id},source='detail?id='+${weibo.id})}">取消 </a>
+                    <a th:href="@{/api/like(id=${weibo.id},source='detail?id='+${weibo.id})}">赞 </a>
                     <a class="nav-link count" th:text="${weibo.likeNum}">点赞 666</a>
                 </li>
                 <li class="nav-item">
@@ -75,6 +74,7 @@
                 document.getElementById("comment").setAttribute("placeholder", "");
                 document.getElementById("comment").disabled = false;
                 document.getElementById("send_button").disabled = false;
+                document.getElementById("mainTitle").innerText="微博er——欢迎回来！"+array[1];
                 console.log("set lower button done")
                 count++;
             }

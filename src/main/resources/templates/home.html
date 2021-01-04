@@ -12,7 +12,7 @@
 <body onload="getLogedin()">
 <nav class="navbar sticky-top navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" style="font-size: calc(1.325rem + 0.9vw)">微博er</a>
+        <a class="navbar-brand" style="font-size: calc(1.325rem + 0.9vw)" id="mainTitle">微博er</a>
         <div class="d-flex">
             <button id="first_button" type="button" class="btn btn-outline-primary" style="margin-right: 6px"
                     onclick="window.location.href='/login'">登录</button>
@@ -39,13 +39,13 @@
                     <span class="nav-link sort-by">排序方式：</span>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link sort-by" onclick="list('time')">时间</button>
+                    <button class="btn btn-outline-primary"  onclick="list('time')">时间</button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link sort-by" onclick="list('likeNum')">点赞</button>
+                    <button class="btn btn-outline-primary"  onclick="list('likeNum')">点赞</button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link sort-by" onclick="list('commentNum')">评论</button>
+                    <button class="btn btn-outline-primary"  onclick="list('commentNum')">评论</button>
                 </li>
             </ul>
         </div>
@@ -129,6 +129,7 @@
                 document.getElementById("new").disabled = false;
                 document.getElementById("send_button").disabled = false;
                 document.getElementById("send_button").setAttribute("onclick","")
+                document.getElementById("mainTitle").innerText="微博er——欢迎回来！"+array[1];
                 console.log("set lower button done")
                 count++;
             }
