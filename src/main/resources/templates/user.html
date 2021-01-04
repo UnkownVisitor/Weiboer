@@ -26,6 +26,7 @@
         console.log("getting loged in!");
         cookies = document.cookie;
         cookies = cookies.replace(/\s/,"");
+        var id = getQueryVariable("id");
         var cookie_array = cookies.split(";");
         console.log(cookie_array.length)
         console.log(cookie_array)
@@ -38,6 +39,10 @@
                 count++;
             }
             else if(array[0]===" u_id" && array[1]!==""){
+                if(id===array[1]){
+                    document.getElementById("addFollow").removeAttribute("href");
+                    console.log("this is me!")
+                }
                 count++;
             }
             if(count===2)
@@ -49,12 +54,6 @@
         var start = getQueryVariable("start");
         var id = getQueryVariable("id");
         var temp = window.location.href;
-        var url = temp.split("?")[0];
-        url+="?start="+start+"&id="+id+"&method="+method;
-        window.location.href=url;
-    }
-    function getPage(start,method){
-        var id = getQueryVariable("id");
         var url = temp.split("?")[0];
         url+="?start="+start+"&id="+id+"&method="+method;
         window.location.href=url;
@@ -75,7 +74,7 @@
     <ul class="list-inline">
         <li class="list-inline-item" th:text="关注 +${thisUser.getFoNum()}">关注 233</li>
         <li class="list-inline-item" th:text="粉丝 +${thisUser.getFoedNum()}">粉丝 666</li>
-        <li class="list-inline-item"><a href="#">+关注</a></li>
+        <li class="list-inline-item"><a th:href="@{/follow(id=${thisUser.getId()},source='user?id='+${thisUser.getId()}+'&method='+${method}+'&start='+${contents.getNumber()})}" id="addFollow">+关注</a></li>
     </ul>
 </div>
 
