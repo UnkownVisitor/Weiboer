@@ -1,5 +1,4 @@
 package web.weiboer.controller;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -294,16 +293,35 @@ public class mainController {
         return "redirect:/"+source;
     }
 
-    @RequestMapping("/user/{id}")
-    public String user(Model model, @RequestParam(value = "id")Long id){
+    @RequestMapping("/user")
+    public String user(Model model,
+                       @RequestParam(value = "start", defaultValue = "0") Integer page,
+                       @RequestParam(value = "id", defaultValue = "0") Long id,
+                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       @RequestParam(value = "method", defaultValue = "time") String method,
+                       HttpServletRequest request, HttpServletResponse response){
+        System.out.println("user sorted by "+method);
+        page = page <0 ? 0 :page;
+        Sort sort =Sort.by(Sort.Direction.DESC,method);
+        Pageable pageable = PageRequest.of(page,limit,sort);
+        String tempEmail = "";
+        for(Cookie cookie:request.getCookies()){
+            if(Objects.equals(cookie.getName(), "u_email")){
+                tempEmail = cookie.getValue();
+            }
+        }
+        Optional<weiboerUser> user = userRepository.findById(Long.valueOf(id));
+        Page<weiboerContent> contents = contentRepository.findAllPageByPoster(user,pageable);
+        if(!user.isPresent()){System.out.println("getting user error!");}
+        else{
+            Cookie cookie = new Cookie("u_id",userRepository.findByEmail(tempEmail).getId().toString());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+        model.addAttribute("thisUser",user.get());
+        model.addAttribute("contents",contents);
         return "user";
-    }
-
-    @RequestMapping("/forget")
-    public ModelAndView forget(Model model,
-                            @RequestParam(value = "id")Long id){
-        ModelAndView mav = new ModelAndView();
-        return mav;
     }
 
     @RequestMapping("/api/follow")
@@ -314,4 +332,12 @@ public class mainController {
     public String api_follower(){
         return "";
     }
+
+    @RequestMapping("/forget")
+    public ModelAndView forget(Model model,
+                               @RequestParam(value = "id")Long id){
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
 }

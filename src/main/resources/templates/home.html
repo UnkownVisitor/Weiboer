@@ -135,7 +135,7 @@
             }
             else if(array[0]===" u_id" && array[1]!==""){
                 console.log("set upper button!")
-                document.getElementById("first_button").setAttribute("onclick", "window.location.href='/user/"+array[1]+"'");
+                document.getElementById("first_button").setAttribute("onclick", "window.location.href='/user?id="+array[1]+"'");
                 document.getElementById("second_button").setAttribute("onclick", "logOut()");
                 document.getElementById("first_button").innerText="我的";
                 document.getElementById("second_button").innerText="注销";
