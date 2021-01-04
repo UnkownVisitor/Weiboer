@@ -117,7 +117,7 @@ public class mainController {
         return "redirect:/main";
     }
 
-    @DeleteMapping(value="/logout/{u_id}")
+    @GetMapping(value="/logout/{u_id}")
     public String logout(HttpServletRequest request,HttpServletResponse response,@PathVariable int u_id)
     {
         System.out.println("logout! "+u_id);
